@@ -8,21 +8,17 @@ import (
 	"github.com/jeroendee/go-demo-web-api/internal/domain"
 )
 
-// Global available data
-var db = &datastore.Db{
-	Clients: domain.GetClients(),
-	Users:   domain.GetUsers(),
-}
-
-// What does the Server need in order to do it's job
-// No global state
+// The server needs a ...
 type Server struct {
 	Router *chi.Mux
-	// Db     *datastore.Data ? server contained data?
+	Db     *datastore.Db
 }
 
 func NewServer() *Server {
 	s := &Server{}
+	s.Db = &datastore.Db{
+		Clients: domain.GetClients(),
+	}
 	s.Router = chi.NewRouter()
 	s.SetupRouter()
 	return s

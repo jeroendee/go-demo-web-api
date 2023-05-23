@@ -1,19 +1,32 @@
 package domain
 
+import (
+	"strconv"
+
+	"github.com/brianvoe/gofakeit/v6"
+)
+
 func GetClients() []*Client {
-	c := []*Client{
-		{Id: "1", UserID: 100, Name: "John", Surname: "Connor", Birthdate: "01-01-1980"},
-		{Id: "2", UserID: 200, Name: "Sarah", Surname: "Connor", Birthdate: "01-01-1960"},
-		{Id: "3", UserID: 300, Name: "Arnold", Surname: "Schwarzenegger", Birthdate: "01-01-1950"},
-	}
+	c := createClientsData()
 	return c
 }
 
-func GetUsers() []*User {
-	u := []*User{
-		{ID: 100, Name: "John"},
-		{ID: 200, Name: "Sarah"},
-		{ID: 300, Name: "Sarah"},
+// iterate 100 times over the creation of client data and add that to the slice
+func createClientsData() []*Client {
+	var l []*Client
+
+	for i := 0; i < 100; i++ {
+		c := &Client{
+			Id:        strconv.Itoa(i + 1),
+			Name:      gofakeit.FirstName(),
+			Surname:   gofakeit.LastName(),
+			Birthdate: gofakeit.Date().Format("2006-01-02"),
+			Email:     gofakeit.Email(),
+			Phone:     gofakeit.Phone(),
+			Age:       int32(gofakeit.Number(10, 100)),
+		}
+		l = append(l, c)
 	}
-	return u
+
+	return l
 }

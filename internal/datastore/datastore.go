@@ -10,7 +10,6 @@ import (
 
 type Db struct {
 	Clients []*domain.Client
-	Users   []*domain.User
 }
 
 func (db *Db) NewClient(client *domain.Client) (string, error) {
@@ -46,13 +45,4 @@ func (db *Db) RemoveClient(id string) (*domain.Client, error) {
 		}
 	}
 	return nil, errors.New("client not found")
-}
-
-func (db *Db) GetUser(id int64) (*domain.User, error) {
-	for _, u := range db.Users {
-		if u.ID == id {
-			return u, nil
-		}
-	}
-	return nil, errors.New("user not found")
 }
