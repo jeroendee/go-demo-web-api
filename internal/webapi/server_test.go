@@ -3,6 +3,7 @@ package webapi
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -167,7 +168,28 @@ func TestCreateClientErr(t *testing.T) {
 }
 
 func TestClientCtxNotFound(t *testing.T) {
-	t.Fail()
+	tcs := []struct {
+		urlp string
+		want int
+	}{
+		{"101", http.StatusNotFound},
+		{"somestring", http.StatusNotFound},
+	}
+
+	for _, tc := range tcs {
+		t.Run(fmt.Sprintf("Requesting client with: %s should result in http statuscode: %d", tc.urlp, tc.want), func(t *testing.T) {
+			// Arrange
+			s := NewServer()
+
+			req, _ := http.NewRequest("GET", "/clients/"+tc.urlp, nil)
+
+			// Act
+			response := executeRequest(req, s)
+
+			// Assert
+			Equal(t, tc.want, response.Code)
+		})
+	}
 }
 
 func Equal[T comparable](t *testing.T, want, got T) {

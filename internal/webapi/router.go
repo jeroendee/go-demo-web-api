@@ -118,14 +118,9 @@ func (s *Server) ClientCtx(next http.Handler) http.Handler {
 		var client *domain.Client
 		var err error
 
-		// cases:
-		// 1. clientId is empty
-		// 2. clientId cannot be matched
-		// 2a. -1, 999
-		// 2b. "leaf" => some random string
-
 		c := chi.URLParam(r, "clientId")
 
+		// This will be handled by /clients call
 		if c == "" {
 			render.Render(w, r, ErrNotFound)
 			return
